@@ -35,18 +35,18 @@ public class PersonController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Person create(@RequestBody Person person) throws Exception {
+    public Person create(@RequestBody Person person) {
 
         return service.create(person);
     }
 
     @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Person update(@RequestBody Person person) throws Exception {
+    public Person update(@RequestBody Person person) {
 
         return service.update(person);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable(value = "id") Long id) {
         service.delete(id);
     }
