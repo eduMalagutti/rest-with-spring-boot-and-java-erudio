@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.eduardo.exceptions.ResourceNotFoundException;
+import com.eduardo.mapper.DozerMapper;
 import com.eduardo.model.Person;
 import com.eduardo.repositories.PersonRepository;
+import com.eduardo.data.vo.v1.PersonVO;
 
 @Service
 public class PersonServices {
@@ -18,28 +20,32 @@ public class PersonServices {
     @Autowired
     PersonRepository repository;
     
-    public List<Person> findAll() {
+    public List<PersonVO> findAll() {
         
         logger.info("finding all people!");
 
-        return repository.findAll();
+        return DozerMapper.parseListObjects(repository.findAll(), PersonVO.class);
     }
     
-    public Person findById(Long id) {
+    public PersonVO findById(Long id) {
         
         logger.info("finding one person!");
 
-        return repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("No records for this id"));
+        var entity = repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("No records for this id"));
+
+        return DozerMapper.parseObject(entity, PersonVO.class);
     }
 
-    public Person create(Person person)
+    public PersonVO create(PersonVO person)
     {
         logger.info("Creating one person");
 
-        return repository.save(person);
+        var entity = DozerMapper.parseObject(person, Person.class);
+        var vo = DozerMapper.parseObject(repository.save(entity), PersonVO.class);
+        return vo;
     }
     
-    public Person update(Person person)
+    public PersonVO update(PersonVO person)
     {
         logger.info("Updating one person");
 
@@ -50,7 +56,8 @@ public class PersonServices {
         entity.setAddress(person.getAddress());
         entity.setGender(person.getGender());
 
-        return repository.save(entity);
+        var vo = DozerMapper.parseObject(repository.save(entity), PersonVO.class);
+        return vo;
     }
     
     public void delete(Long id)
