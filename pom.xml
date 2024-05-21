@@ -44,6 +44,7 @@
 			<optional>true</optional>
 		</dependency>		
 
+		<!-- Ira ser depreciado, vale estudar MOdelMapper ou Orika -->
 		<dependency>
 			<groupId>com.github.dozermapper</groupId>
 			<artifactId>dozer-core</artifactId>
